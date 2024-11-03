@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from models.user import User
 from database import db
-from flask_login import LoginManager, login_user, current_user
+from flask_login import LoginManager, login_user, current_user, logout_user, login_required
 
 
 app = Flask(__name__)
@@ -40,6 +40,12 @@ def login():
     return jsonify({"message":"Falha de autenticação!!"})
   
   return jsonify({"message":"Credentials invalid!"}),400
+
+@app.route("/logout", methods=["GET"])
+@login_required
+def logout():
+  logout_user()
+  return jsonify({"message": "Logout realizado com sucesso"})
 
 
 @app.route("/hello-world",methods=["GET"])
